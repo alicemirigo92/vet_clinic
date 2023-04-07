@@ -13,16 +13,26 @@ INSERT INTO animals (name, date_of_birth, escape_attempts, neutered, weight_kg) 
 ('Blossom', '1998-09-13', 3, true, 17),
 ('Ditto', '2022-05-14', 4, true, 22);
 
-
-INSERT INTO owners (full_name, age) VALUES('Sam Smith', 34),('Jennifer Orwell', 19),('Bob', 45),('Melody Pond', 77),('Dean Winchester', 14),('Jodie Whittaker', 38);
+INSERT INTO owners (full_name, age) VALUES
+('Sam Smith', 34),
+('Jennifer Orwell', 19),
+('Bob', 45),
+('Melody Pond', 77),
+('Dean Winchester', 14),
+('Jodie Whittaker', 38);
 
 INSERT INTO species(name) Values('Pokemon');
 INSERT INTO species(name) Values('Digimon');
 
 -- If the name ends in "mon" it will be Digimon
 UPDATE animals SET species_id = 2 WHERE name LIKE '%mon';
+
 -- All other animals are Pokemon
-UPDATE animals SET species_id = 1 WHERE name LIKE '%mon';
+UPDATE animals
+SET species_id = (SELECT id from species WHERE name = 'Pokemon')
+WHERE species_id IS NULL;
+
+
 -- Update Sam Smith owns Agumon
 UPDATE animals SET owner_id = 1 WHERE name LIKE 'Agumon';
 -- Jennifer Orwell owns Gabumon and Pikachu
@@ -43,3 +53,5 @@ UPDATE animals SET owner_id = 4 WHERE name LIKE 'Blossom';
 UPDATE animals SET owner_id = 5 WHERE name LIKE 'Angemon';
 -- Dean Winchester owns Angemon and Boarmon.
 UPDATE animals SET owner_id = 5 WHERE name LIKE 'Boarmon';
+
+
