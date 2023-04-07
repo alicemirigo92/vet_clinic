@@ -69,3 +69,44 @@ SELECT species, MIN(weight_kg) AS minimum_weight, MAX(weight_kg) AS maximum_weig
 
 -- What is the average number of escape attempts per animal type of those born between 1990 and 2000?
 SELECT species, AVG(escape_attempts) FROM animals WHERE EXTRACT(YEAR FROM date_of_birth) BETWEEN 1990 AND 2000 GROUP BY species;
+
+
+-- Write queries (using JOIN) to answer the following questions:
+-- Query to find the animals owned by Melody Pond
+SELECT owners.full_name, animals.name FROM owners JOIN animals ON animals.owner_id = owners.id WHERE owners.full_name = 'Melody Pond';
+--  Query to list all the animals that are pokemon
+
+SELECT animals.name FROM animals JOIN species ON animals.species_id = species.id WHERE animals.species_id = 1;
+-- Query to list all owners and their animals (including those who don't own any)
+SELECT full_name, name FROM owners FULL OUTER JOIN animals ON owners.id = animals.owner_id;
+
+-- Query to count the number of animals per species
+SELECT COUNT(animals.id), species.name  FROM species LEFT JOIN animals ON animals.species_id = species.id GROUP BY species.name;
+SELECT COUNT(species_id), (species.name)  FROM animals JOIN species ON animals.species_id = species.id GROUP BY species.name;
+
+-- Query to list all the Digimon owned by Jennifer Orwell
+SELECT (animals.name) AS animalName, (species.name) AS speciesName, full_name FROM animals
+JOIN species ON animals.species_id = species.id
+JOIN owners ON animals.owner_id = owners.id
+WHERE species.id = 2 AND owner_id = 2;
+
+-- Query to list all the animals owned by Dean Winchester that haven't tried to escape
+SELECT name, full_name FROM animals
+FULL OUTER JOIN owners ON animals.owner_id = owners.id
+WHERE escape_attempts = 0 AND owner_id = 5;
+
+
+
+-- Query to find the owner with the most animals
+SELECT full_name, COUNT(owner_id) AS Total_animals FROM owners
+JOIN animals ON  owners.id = animals.owner_id
+GROUP BY full_name
+ORDER BY COUNT(name) DESC;
+
+SELECT owners.full_name, species.name, animals.name
+FROM owners
+INNER JOIN animals
+ON owners.id = animals.owner_id
+INNER JOIN species
+ON animals.species_id = species_id
+WHERE owners.full_name = 'Jennifer Orwell' AND species.name = 'Digimon';
