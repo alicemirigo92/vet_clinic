@@ -57,3 +57,17 @@ CREATE TABLE visits (
   PRIMARY KEY (animal_id, vet_id, date_of_visit)
 );
 
+-- Add an email column to your owners table
+ALTER TABLE owners ADD COLUMN email VARCHAR(120);
+
+ALTER TABLE owners
+ALTER COLUMN age DROP NOT NULL;
+
+-- Find a way to decrease the execution time of the first query.
+CREATE INDEX animal_id ON visits(animal_id ASC);
+explain analyze SELECT COUNT(*) FROM visits where animal_id = 4;
+-- Find a way to improve execution time of the other two queries.
+CREATE INDEX vet_id ON visits(vet_id ASC);
+explain analyze SELECT * FROM visits where vet_id = 2;
+CREATE INDEX email ON owners(email ASC);
+explain analyze SELECT * FROM owners where email = 'owner_18327@mail.com';
